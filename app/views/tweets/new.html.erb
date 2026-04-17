@@ -1,0 +1,10 @@
+<%= form_with model: @tweet do |f|  %>
+
+  <%= f.label :body %>  
+  <%= f.text_area :body %>
+
+  <%= f.submit "Post", disable_with: 'Posting...' %>
+
+<% end %>
+
+<%= link_to "Cancel", tweets_path %>

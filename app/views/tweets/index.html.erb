@@ -2,3 +2,5 @@
 <% @tweets.each do |tweet| %>
   <p><%= tweet.body %></p>
 <% end %>
+
+<%= link_to "New", new_tweet_path %>
