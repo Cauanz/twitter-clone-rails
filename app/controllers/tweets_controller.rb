@@ -1,4 +1,5 @@
 class TweetsController < ApplicationController
+  before_action :authenticate_user!
 
   # /tweets - GET TWEETS
   def index
@@ -16,20 +17,40 @@ class TweetsController < ApplicationController
   
   
   # /tweets - POST TWEETS FORMDATA
-  # TODO - NÃO FUNCIONANDO DE NOVO
   def create
-    @tweet = Tweet.new(tweet_params)
+    @tweet = current_user.tweets.build(tweet_params)
+
+    print @tweet
 
     if @tweet.save
       flash[:success] = "Tweet successfully created"
       redirect_to @tweet
       # redirect_to tweets_path
     else
+      Rails.logger.debug @tweet.errors.full_messages
       flash[:error] = "Something went wrong"
       render :new
     end
   end
   
+
+
+
+
+  def edit
+    @tweet = Tweet.find(params[:id])
+  end
+
+  def update
+    @tweet = Tweet.find(params[:id])
+    if @tweet.update(tweet_params)
+      redirect_to @tweet
+    else
+      flash[:error] = "Something went wrong"
+      render :edit
+    end
+  end
+
 
   def tweet_params
     params.require(:tweet).permit(:body)
