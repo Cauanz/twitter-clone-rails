@@ -1,67 +1,241 @@
-<h1>Tweets</h1>
-<% @tweets.each do |tweet| %>
-  <div>
-    <%= link_to tweet_path(tweet) do %>
-      <p><%= tweet.body %></p>
-      <p>Likes: <%= tweet.likes.count %></p>
-    <% end %>
+<div class="app-layout">
+  <aside class="left-nav">
+    <div class="left-top">
 
-    <%= button_to "Like", like_tweet_path(tweet), method: :post %>
+    <h2 class="logo">𝕏 Clone</h2>
+
+    <nav class="menu">
+      <%= link_to "Início", "#", class: "menu-item active" %>
+      <%= link_to "Explorar", "#", class: "menu-item" %>
+      <%= link_to "Notificações", "#", class: "menu-item" %>
+      <%= link_to "Mensagens", "#", class: "menu-item" %>
+      <%= link_to "Perfil", "#", class: "menu-item" %>
+      <%= link_to "Configurações", "#", class: "menu-item" %>
+    </nav>
   </div>
+
+  <div class="profile-config">
+    <a href="">
+      <span class="avatar"></span>
+      
+      <span class="username"></span>
+      <span class="extra"></span>
+      <span class="options"></span>
+    </a>
+  </div>
+  </aside>
+
+
+  <main class="feed">
+    <header class="feed-header">
+      <%# TODO CONVERTER ISSO PARA DOIS BOTÕES %>
+      <h1>Para você</h1>
+      <h1>Seguindo</h1>
+    </header>
+
+    <% @tweets.each do |tweet| %>
+      <article class="tweet-card">
+        <%= link_to tweet_path(tweet), class: "tweet-link" do %>
+          <p class="tweet-body"><%= tweet.body %></p>
+        <% end %>
+
+        <div class="tweet-actions">
+          <span class="likes-count">❤️ <%= tweet.likes.count %></span>
+          <%= button_to "Curtir", like_tweet_path(tweet), method: :post, class: "like-btn" %>
+        </div>
+      </article>
+    <% end %>
+  </main>
+</div>
+
+<%= link_to new_tweet_path, class: "fab", title: "Criar novo post" do %>
+  +
 <% end %>
 
-<%= link_to "New", new_tweet_path %>
-
-
 <style>
-div {
-  width: min(620px, calc(100% - (var(--content-padding) * 2)));
-  margin: 32px auto;
-  padding: 20px;
-  background: #ffffff;
-  border: 1px solid #eff3f4;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(15, 20, 25, 0.06);
-}
+  :root {
+    --bg: #f5f8fa;
+    --card: #ffffff;
+    --text: #0f1419;
+    --muted: #536471;
+    --border: #eff3f4;
+    --primary: #1d9bf0;
+    --primary-hover: #1a8cd8;
+  }
 
-div p {
-  margin: 0 0 18px;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  word-break: break-word;
-}
+  * {
+    box-sizing: border-box;
+  }
 
-div a {
-  display: inline-block;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.95rem;
-  padding: 10px 16px;
-  border-radius: 9999px;
-  transition: all 0.2s ease;
-  margin-right: 8px;
-}
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
 
-div a:first-of-type {
-  background: #1d9bf0;
-  color: #ffffff;
-  border: 1px solid #1d9bf0;
-}
+  .app-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
 
-div a:first-of-type:hover {
-  background: #1a8cd8;
-  border-color: #1a8cd8;
-}
+  .left-nav {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    border-radius: 16px;
+    padding: 16px;
+  }
 
-div a:last-of-type {
-  background: transparent;
-  color: #536471;
-  border: 1px solid #cfd9de;
-}
+  .left-top {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+  }
 
-div a:last-of-type:hover {
-  background: #eff3f4;
-  color: #0f1419;
-}
+  .profile-config {
+    height: fit-content;
+    padding: 16px;
+    margin-top: 15px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    position: sticky;
+    top: 20px;
+  }
 
+  .logo {
+    margin: 0 0 16px;
+    font-size: 1.4rem;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .menu-item {
+    text-decoration: none;
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  .menu-item:hover {
+    background: #e8f5fe;
+    color: var(--primary);
+  }
+
+  .menu-item.active {
+    background: #e8f5fe;
+    color: var(--primary);
+  }
+
+  .feed {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .feed-header {
+    display: flex;
+    justify-content: space-around; 
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .feed-header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .tweet-card {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tweet-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .tweet-body {
+    margin: 0 0 12px;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  .tweet-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .likes-count {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .like-btn {
+    border: 1px solid #cfd9de;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .like-btn:hover {
+    background: #eff3f4;
+    color: var(--text);
+  }
+
+  .fab {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    text-decoration: none;
+    font-size: 2rem;
+    line-height: 58px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(29, 155, 240, 0.35);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .fab:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 900px) {
+    .app-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .left-nav {
+      position: static;
+    }
+  }
 </style>

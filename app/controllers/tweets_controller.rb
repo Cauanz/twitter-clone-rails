@@ -1,5 +1,6 @@
 class TweetsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_product, only: %i[show edit update]
 
   # /tweets - GET TWEETS
   def index
@@ -13,7 +14,7 @@ class TweetsController < ApplicationController
 
   # /tweet - GET TWEET (1 TWEET)
   def show
-    @tweet = Tweet.find(params[:id])
+
   end
   
   # /tweets - POST TWEETS FORMDATA
@@ -35,12 +36,10 @@ class TweetsController < ApplicationController
   
   # /tweets - 
   def edit
-    @tweet = Tweet.find(params[:id])
   end
 
   #tweets/:id - GET/PUT/PATCH TWEET
   def update
-    @tweet = Tweet.find(params[:id])
     if @tweet.update(tweet_params)
       redirect_to @tweet
     else
@@ -49,7 +48,15 @@ class TweetsController < ApplicationController
     end
   end
 
-  def 
+  def destroy
+    @tweet.destroy
+    redirect_to tweets_path
+  end
+
+
+  def set_product
+    @tweet = Tweet.find(params[:id])
+  end
 
   # VALIDATE PARAMS
   def tweet_params
