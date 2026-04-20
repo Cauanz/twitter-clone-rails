@@ -1,8 +1,67 @@
 <h1>Tweets</h1>
 <% @tweets.each do |tweet| %>
-  <a href="/tweets/<%= tweet.id %>">
-    <p><%= tweet.body %></p>
-  </a>
+  <div>
+    <%= link_to tweet_path(tweet) do %>
+      <p><%= tweet.body %></p>
+      <p>Likes: <%= tweet.likes.count %></p>
+    <% end %>
+
+    <%= button_to "Like", like_tweet_path(tweet), method: :post %>
+  </div>
 <% end %>
 
 <%= link_to "New", new_tweet_path %>
+
+
+<style>
+div {
+  width: min(620px, calc(100% - (var(--content-padding) * 2)));
+  margin: 32px auto;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #eff3f4;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(15, 20, 25, 0.06);
+}
+
+div p {
+  margin: 0 0 18px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+div a {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+div a:first-of-type {
+  background: #1d9bf0;
+  color: #ffffff;
+  border: 1px solid #1d9bf0;
+}
+
+div a:first-of-type:hover {
+  background: #1a8cd8;
+  border-color: #1a8cd8;
+}
+
+div a:last-of-type {
+  background: transparent;
+  color: #536471;
+  border: 1px solid #cfd9de;
+}
+
+div a:last-of-type:hover {
+  background: #eff3f4;
+  color: #0f1419;
+}
+
+</style>

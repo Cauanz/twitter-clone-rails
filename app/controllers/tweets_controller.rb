@@ -6,15 +6,15 @@ class TweetsController < ApplicationController
     @tweets = Tweet.all
   end
 
-  # /tweets - GET TWEETS FORM
+  # /tweets - GET TWEET FORM
   def new
     @tweet = Tweet.new
   end
 
+  # /tweet - GET TWEET (1 TWEET)
   def show
     @tweet = Tweet.find(params[:id])
   end
-  
   
   # /tweets - POST TWEETS FORMDATA
   def create
@@ -33,14 +33,12 @@ class TweetsController < ApplicationController
     end
   end
   
-
-
-
-
+  # /tweets - 
   def edit
     @tweet = Tweet.find(params[:id])
   end
 
+  #tweets/:id - GET/PUT/PATCH TWEET
   def update
     @tweet = Tweet.find(params[:id])
     if @tweet.update(tweet_params)
@@ -51,7 +49,9 @@ class TweetsController < ApplicationController
     end
   end
 
+  def 
 
+  # VALIDATE PARAMS
   def tweet_params
     params.require(:tweet).permit(:body)
   end

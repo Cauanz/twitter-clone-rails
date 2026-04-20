@@ -1,11 +1,81 @@
-<%= form_with model: tweet do |form|  %>
-  <% if form.object.errors.any? %>
-    <p class="error"><%= form.object.errors.full_messages.first %></p>
+<div>
+  <%= form_with model: tweet do |form|  %>
+    <% if form.object.errors.any? %>
+      <p class="error"><%= form.object.errors.full_messages.first %></p>
+    <% end %>
+
+    <%= form.label :body %>  
+    <%= form.text_area :body %>
+
+    <%= form.submit "Post", disable_with: 'Posting...' %>
+
   <% end %>
+</div>
 
-  <%= form.label :body %>  
-  <%= form.text_area :body %>
+<style>
+  form {
+    max-width: 640px;
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
 
-  <%= form.submit "Post", disable_with: 'Posting...' %>
+  form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #111827;
+  }
 
-<% end %>
+  form textarea {
+    width: 100%;
+    min-height: 120px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    resize: vertical;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #111827;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 0.75rem;
+  }
+
+  form textarea:focus {
+    outline: none;
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.2);
+  }
+
+  form input[type="submit"] {
+    display: inline-block;
+    border: 0;
+    border-radius: 999px;
+    background: #1d9bf0;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.6rem 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.05s;
+  }
+
+  form input[type="submit"]:hover {
+    background: #178ad6;
+  }
+
+  form input[type="submit"]:active {
+    transform: translateY(1px);
+  }
+
+  p.error {
+    margin: 0 0 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    font-size: 0.9rem;
+  }
+</style>

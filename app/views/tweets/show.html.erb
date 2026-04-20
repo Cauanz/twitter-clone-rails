@@ -1,7 +1,74 @@
-<div>
-  <p><%= @tweet.body %></p>
+<section class="tweet-show">
+  <article class="tweet-card">
+    <p class="tweet-body"><%= @tweet.body %></p>
 
-  <%= link_to "Edit", edit_tweet_path(@tweet) %>
-  <%= link_to "Back", tweets_path %>
+    <nav class="tweet-actions" aria-label="Ações do tweet">
+      <%= link_to "Editar", edit_tweet_path(@tweet), class: "btn btn-primary" %>
+      <%= link_to "Voltar", tweets_path, class: "btn btn-secondary" %>
+    </nav>
+  </article>
+</section>
 
-</div>
+<style>
+  .tweet-show {
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+    background: #e6ecf0;
+    min-height: 100vh;
+  }
+
+  .tweet-card {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    border: 1px solid #e1e8ed;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .tweet-body {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #14171a;
+    margin-bottom: 20px;
+    word-break: break-word;
+  }
+
+  .tweet-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 9999px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary {
+    background: #1da1f2;
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: #1991da;
+  }
+
+  .btn-secondary {
+    background: #f5f8fa;
+    color: #14171a;
+    border: 1px solid #cfd9de;
+  }
+
+  .btn-secondary:hover {
+    background: #e8f5fe;
+  }
+
+</style>
