@@ -37,7 +37,15 @@
 
     <% @tweets.each do |tweet| %>
         <article class="tweet-card">
-          <%= button_to "Delete", destroy_path %>
+          <span class="menu-container">
+            <button class="menu" onclick="openModal()">
+              Open
+            </button>
+              <span class="menu-modal">
+                <%# options %>
+                <%= button_to "Delete", tweet_path(tweet), method: :delete %>
+              </span>
+          </span>
       <%= link_to tweet_path(tweet), class: "tweet-link" do %>
         <p class="tweet-body"><%= tweet.body %></p>
       <% end %>
@@ -75,6 +83,17 @@
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .menu-modal {
+    display: none;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
   }
 
   .app-layout {
@@ -242,3 +261,17 @@
     }
   }
 </style>
+
+<script>
+  const menuBtn = document.getElementsByClassName("menu")[0]
+  const menu = document.getElementsByClassName("menu-modal")[0]
+
+  function openModal() {
+    if(menu.style.display === "block") {
+      menu.style.display = "none"
+    } else {
+      menu.style.display = "block"
+    }
+  }
+
+</script>
