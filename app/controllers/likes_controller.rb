@@ -1,6 +1,7 @@
 class LikesController < ApplicationController
 
   def create
+    # TODO - TALVEZ ADICIONAR VERIFICAÇÃO E PERMITIR SÓ UM LIKE, E REMOVER ELE SE ENVIADO NOVAMENTE
     Like.create(user: current_user, tweet: Tweet.find(params[:id]))
     redirect_to tweets_path
   end

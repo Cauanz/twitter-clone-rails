@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :tweets
+  resources :users
 
   post "/tweets/:id/like", to: "likes#create", as: :like_tweet
 

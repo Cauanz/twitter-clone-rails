@@ -1,6 +1,6 @@
 class TweetsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_product, only: %i[show edit update]
+  before_action :set_product, only: %i[show edit update destroy]
 
   # /tweets - GET TWEETS
   def index
@@ -20,8 +20,6 @@ class TweetsController < ApplicationController
   # /tweets - POST TWEETS FORMDATA
   def create
     @tweet = current_user.tweets.build(tweet_params)
-
-    print @tweet
 
     if @tweet.save
       flash[:success] = "Tweet successfully created"

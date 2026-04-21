@@ -20,7 +20,9 @@
       
       <span class="username"></span>
       <span class="extra"></span>
-      <span class="options"></span>
+      <span class="options">
+        <%= button_to "Logout", destroy_user_session_path, method: :delete %>
+      </span>
     </a>
   </div>
   </aside>
@@ -34,16 +36,17 @@
     </header>
 
     <% @tweets.each do |tweet| %>
-      <article class="tweet-card">
-        <%= link_to tweet_path(tweet), class: "tweet-link" do %>
-          <p class="tweet-body"><%= tweet.body %></p>
-        <% end %>
+        <article class="tweet-card">
+          <%= button_to "Delete", destroy_path %>
+      <%= link_to tweet_path(tweet), class: "tweet-link" do %>
+        <p class="tweet-body"><%= tweet.body %></p>
+      <% end %>
 
-        <div class="tweet-actions">
-          <span class="likes-count">❤️ <%= tweet.likes.count %></span>
-          <%= button_to "Curtir", like_tweet_path(tweet), method: :post, class: "like-btn" %>
-        </div>
-      </article>
+          <div class="tweet-actions">
+            <span class="likes-count">❤️ <%= tweet.likes.count %></span>
+            <%= button_to "Curtir", like_tweet_path(tweet), method: :post, class: "like-btn" %>
+          </div>
+        </article>
     <% end %>
   </main>
 </div>
