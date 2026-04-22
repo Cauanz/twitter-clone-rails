@@ -15,15 +15,20 @@
   </div>
 
   <div class="profile-config">
+    <% if user_signed_in? %>
     <a href="">
       <span class="avatar"></span>
       
-      <span class="username"></span>
+      <span class="username">
+      </span>
       <span class="extra"></span>
       <span class="options">
-        <%= button_to "Logout", destroy_user_session_path, method: :delete %>
+        <%= button_to "Sair", destroy_user_session_path, method: :delete, data: { turbo_submits_with: "Saindo..." } %>
       </span>
     </a>
+    <% else %>
+        <%= button_to "Entrar", new_user_session_path, method: :get %>
+    <% end %>
   </div>
   </aside>
 
@@ -37,15 +42,7 @@
 
     <% @tweets.each do |tweet| %>
         <article class="tweet-card">
-          <span class="menu-container">
-            <button class="menu" onclick="openModal()">
-              Open
-            </button>
-              <span class="menu-modal">
-                <%# options %>
-                <%= button_to "Delete", tweet_path(tweet), method: :delete %>
-              </span>
-          </span>
+        <%= button_to "Delete", tweet_path(tweet), method: :delete %>
       <%= link_to tweet_path(tweet), class: "tweet-link" do %>
         <p class="tweet-body"><%= tweet.body %></p>
       <% end %>
@@ -261,17 +258,3 @@
     }
   }
 </style>
-
-<script>
-  const menuBtn = document.getElementsByClassName("menu")[0]
-  const menu = document.getElementsByClassName("menu-modal")[0]
-
-  function openModal() {
-    if(menu.style.display === "block") {
-      menu.style.display = "none"
-    } else {
-      menu.style.display = "block"
-    }
-  }
-
-</script>
