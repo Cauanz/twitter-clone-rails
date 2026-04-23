@@ -68,7 +68,7 @@ end
 gem 'devise'
 gem 'image_processing', '~> 1.2'
 gem 'pagy'
-gem 'noticed', '~> 2.0'
+gem 'noticed', '~> 3.0'
 gem 'pg_search'
 
 group :development, :test do
