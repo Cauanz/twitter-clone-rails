@@ -1,4 +1,5 @@
 class LikesController < ApplicationController
+  before_action :authenticate_user!
 
   def create
     # TODO - TALVEZ ADICIONAR VERIFICAÇÃO E PERMITIR SÓ UM LIKE, E REMOVER ELE SE ENVIADO NOVAMENTE

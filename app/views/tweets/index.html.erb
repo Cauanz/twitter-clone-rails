@@ -16,18 +16,19 @@
 
   <div class="profile-config">
     <% if user_signed_in? %>
-    <a href="">
       <span class="avatar"></span>
       
       <span class="username">
+        <p>
+          <%= current_user.username %>
+        </p>
       </span>
       <span class="extra"></span>
       <span class="options">
-        <%= button_to "Sair", destroy_user_session_path, method: :delete, data: { turbo_submits_with: "Saindo..." } %>
+        <%= link_to "Sair", destroy_user_session_path, method: :delete, data: { turbo_submits_with: "Saindo...", turbo_method: :delete } %>
       </span>
-    </a>
     <% else %>
-        <%= button_to "Entrar", new_user_session_path, method: :get %>
+        <%= link_to "Entrar", new_user_session_path %>
     <% end %>
   </div>
   </aside>
@@ -41,15 +42,30 @@
     </header>
 
     <% @tweets.each do |tweet| %>
-        <article class="tweet-card">
+      <article class="tweet-card">
         <%= button_to "Delete", tweet_path(tweet), method: :delete %>
-      <%= link_to tweet_path(tweet), class: "tweet-link" do %>
-        <p class="tweet-body"><%= tweet.body %></p>
-      <% end %>
+        <span class="post-avatar">
+          <p><%= tweet.user.username %> </p>
+        </span>
+        <span class="post-username"></span>
+        <span class="post-nickname"></span>
+        <span class="posted-at"></span>
+
+
+        <%= link_to tweet_path(tweet), class: "tweet-link" do %>
+          <p class="tweet-body"><%= tweet.body %></p>
+        <% end %>
+
 
           <div class="tweet-actions">
             <span class="likes-count">❤️ <%= tweet.likes.count %></span>
             <%= button_to "Curtir", like_tweet_path(tweet), method: :post, class: "like-btn" %>
+
+            <span class="retweets-count"></span>
+            <%= button_to "Retweet", like_tweet_path(tweet), method: :post, class: "like-btn" %>
+
+            <span class="comments-count"></span>
+            <%= button_to "Comentarios", like_tweet_path(tweet), method: :post, class: "like-btn" %>
           </div>
         </article>
     <% end %>

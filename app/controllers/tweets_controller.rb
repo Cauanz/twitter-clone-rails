@@ -1,6 +1,7 @@
 class TweetsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_product, only: %i[show edit update destroy]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authorize_user!, only: [:destroy]
+  before_action :set_tweet, only: %i[show edit update destroy]
 
   # /tweets - GET TWEETS
   def index
@@ -52,7 +53,12 @@ class TweetsController < ApplicationController
   end
 
 
-  def set_product
+  def authorize_user!
+    #TODO - CONSERTAR ISSO, NÃO EXISTE USER? EM TWEET
+    redirect_to tweets_path, alert: "Não autorizado" unless @tweet.user == current_user
+  end
+
+  def set_tweet
     @tweet = Tweet.find(params[:id])
   end
 
