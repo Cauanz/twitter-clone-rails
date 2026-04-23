@@ -1,27 +1,160 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me %></p>
-      <p><%= f.label :remember_me %></p>
+<div class="twitter-login-page">
+  <div class="twitter-login-card">
+    <div class="twitter-login-header">
+      <h2>Log in</h2>
+      <p>Enter your account</p>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "twitter-login-form" }) do |f| %>
+
+      <div class="field">
+        <p><%= f.label :email %></p>
+        <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+      </div>
+
+      <div class="field">
+        <p><%= f.label :password %></p>
+        <p><%= f.password_field :password, autocomplete: "current-password" %></p>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="remember-field">
+          <p><%= f.check_box :remember_me %></p>
+          <p><%= f.label :remember_me %></p>
+        </div>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit "Log in" %>
+      </div>
+    <% end %>
+
+    <div class="twitter-links">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
-<% end %>
+</div>
 
-<%= render "devise/shared/links" %>
+
+<style>
+  .twitter-login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #0f1419;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .twitter-login-card {
+    width: 100%;
+    max-width: 420px;
+    background: #000;
+    border: 1px solid #2f3336;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    color: #e7e9ea;
+  }
+
+  .twitter-login-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #e7e9ea;
+  }
+
+  .twitter-login-header p {
+    margin: 8px 0 24px;
+    color: #71767b;
+    font-size: 14px;
+  }
+
+  .twitter-login-form .field {
+    margin-bottom: 18px;
+  }
+
+  .twitter-login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e7e9ea;
+  }
+
+  .twitter-login-form input[type="text"],
+  .twitter-login-form input[type="email"],
+  .twitter-login-form input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #3d4144;
+    border-radius: 12px;
+    background: transparent;
+    color: #e7e9ea;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .twitter-login-form input::placeholder {
+    color: #71767b;
+  }
+
+  .twitter-login-form input:focus {
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 1px #1d9bf0;
+  }
+
+  .twitter-login-form .hint {
+    margin: -2px 0 8px;
+    color: #71767b;
+    font-size: 12px;
+  }
+
+  .twitter-login-form .actions {
+    margin-top: 24px;
+  }
+
+  .twitter-login-form .actions input[type="submit"] {
+    width: 100%;
+    border: none;
+    border-radius: 9999px;
+    padding: 14px 16px;
+    background: #1d9bf0;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  .twitter-login-form .actions input[type="submit"]:hover {
+    background: #1a8cd8;
+  }
+
+  .twitter-login-form .actions input[type="submit"]:active {
+    transform: translateY(1px);
+  }
+
+  .remember-field {
+    display: flex;
+    gap: 10px;
+  }
+
+
+  .twitter-links {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .twitter-links a {
+    color: #1d9bf0;
+    text-decoration: none;
+  }
+
+  .twitter-links a:hover {
+    text-decoration: underline;
+  }
+</style>

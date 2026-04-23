@@ -1,34 +1,160 @@
-<h2>Sign up</h2>
+<div class="twitter-signup-page">
+  <div class="twitter-signup-card">
+    <div class="twitter-signup-header">
+      <h2>Sign up</h2>
+      <p>Create your account</p>
+    </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "twitter-signup-form" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <p><%= f.label :username %></p>
-    <p><%= f.text_field :username, autofocus: true, autocomplete: "username" %></p>
-  </div>
+      <div class="field">
+        <%= f.label :username %>
+        <%= f.text_field :username, autofocus: true, autocomplete: "username", placeholder: "Username" %>
+      </div>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+      <div class="field">
+        <%= f.label :email %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email" %>
+      </div>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
+      <div class="field">
+        <%= f.label :password %>
+        <% if @minimum_password_length %>
+          <p class="hint"><%= @minimum_password_length %> characters minimum</p>
+        <% end %>
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Confirm password" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Create account" %>
+      </div>
     <% end %>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-  </div>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
+    <div class="twitter-links">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
+</div>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+<style>
+  .twitter-signup-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #0f1419;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
 
-<%= render "devise/shared/links" %>
+  .twitter-signup-card {
+    width: 100%;
+    max-width: 420px;
+    background: #000;
+    border: 1px solid #2f3336;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    color: #e7e9ea;
+  }
+
+  .twitter-signup-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #e7e9ea;
+  }
+
+  .twitter-signup-header p {
+    margin: 8px 0 24px;
+    color: #71767b;
+    font-size: 14px;
+  }
+
+  .twitter-signup-form .field {
+    margin-bottom: 18px;
+  }
+
+  .twitter-signup-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e7e9ea;
+  }
+
+  .twitter-signup-form input[type="text"],
+  .twitter-signup-form input[type="email"],
+  .twitter-signup-form input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #3d4144;
+    border-radius: 12px;
+    background: transparent;
+    color: #e7e9ea;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .twitter-signup-form input::placeholder {
+    color: #71767b;
+  }
+
+  .twitter-signup-form input:focus {
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 1px #1d9bf0;
+  }
+
+  .twitter-signup-form .hint {
+    margin: -2px 0 8px;
+    color: #71767b;
+    font-size: 12px;
+  }
+
+  .twitter-signup-form .actions {
+    margin-top: 24px;
+  }
+
+  .twitter-signup-form .actions input[type="submit"] {
+    width: 100%;
+    border: none;
+    border-radius: 9999px;
+    padding: 14px 16px;
+    background: #1d9bf0;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  .twitter-signup-form .actions input[type="submit"]:hover {
+    background: #1a8cd8;
+  }
+
+  .twitter-signup-form .actions input[type="submit"]:active {
+    transform: translateY(1px);
+  }
+
+  .twitter-links {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .twitter-links a {
+    color: #1d9bf0;
+    text-decoration: none;
+  }
+
+  .twitter-links a:hover {
+    text-decoration: underline;
+  }
+</style>

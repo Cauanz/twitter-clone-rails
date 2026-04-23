@@ -43,7 +43,10 @@
 
     <% @tweets.each do |tweet| %>
       <article class="tweet-card">
+        <%# TODO - MOVER ISSO PARA A ABA DE PERFIL %>
+        <% if tweet.user == current_user %>
         <%= button_to "Delete", tweet_path(tweet), method: :delete %>
+        <% end %>
         <span class="post-avatar">
           <p><%= tweet.user.username %> </p>
         </span>
@@ -73,30 +76,10 @@
 </div>
 
 <%= link_to new_tweet_path, class: "fab", title: "Criar novo post" do %>
-  +
+  <p>+</p>
 <% end %>
 
 <style>
-  :root {
-    --bg: #f5f8fa;
-    --card: #ffffff;
-    --text: #0f1419;
-    --muted: #536471;
-    --border: #eff3f4;
-    --primary: #1d9bf0;
-    --primary-hover: #1a8cd8;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
 
   .menu-modal {
     display: none;
@@ -252,11 +235,14 @@
     background: var(--primary);
     color: #fff;
     text-decoration: none;
-    font-size: 2rem;
-    line-height: 58px;
     text-align: center;
     box-shadow: 0 8px 24px rgba(29, 155, 240, 0.35);
     transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .fab p {
+    font-size: 2rem;
+    margin: 0;
   }
 
   .fab:hover {

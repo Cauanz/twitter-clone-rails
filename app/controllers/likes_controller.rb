@@ -7,4 +7,8 @@ class LikesController < ApplicationController
     redirect_to tweets_path
   end
 
+  def find
+    Like
+  end
+
 end

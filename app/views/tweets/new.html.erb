@@ -1,4 +1,31 @@
-<h1>New Tweet</h1>
+<div class="new-tweet-container">
+  <h1>New Tweet</h1>
 
-<%= render "form", tweet: @tweet %>
-<%= link_to "Cancel", tweets_path %>
+  <%= render "form", tweet: @tweet %>
+  <%= link_to "Cancel", tweets_path, class: "cancel-btn" %>
+</div>
+
+
+<style>
+  .new-tweet-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .cancel-btn {
+    display: inline-block;
+    border: 0;
+    border-radius: 999px;
+    background: #1d9bf0;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.6rem 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.05s;
+  }
+</style>
