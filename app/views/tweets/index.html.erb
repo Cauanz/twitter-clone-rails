@@ -56,7 +56,22 @@
 
 
         <%= link_to tweet_path(tweet), class: "tweet-link" do %>
-          <p class="tweet-body"><%= tweet.body %></p>
+          <% if tweet.retweet %>
+            <p class="tweet-body"><%= tweet.retweet.body %></p>
+
+            <% if tweet.retweet.image.attached? %>
+              <%= image_tag tweet.retweet.image %>
+            <% end %>
+            
+          <% else %>
+
+            <p class="tweet-body"><%= tweet.body %></p>
+
+            <% if tweet.image.attached? %>
+              <%= image_tag tweet.image %>
+            <% end %>
+
+          <% end %>
         <% end %>
 
 
@@ -65,7 +80,7 @@
             <%= button_to "Curtir", like_tweet_path(tweet), method: :post, class: "like-btn" %>
 
             <span class="retweets-count"></span>
-            <%= button_to "Retweet", like_tweet_path(tweet), method: :post, class: "like-btn" %>
+            <%= button_to "Retweet", retweet_path(tweet), method: :post, class: "like-btn" %>
 
             <span class="comments-count"></span>
             <%= button_to "Comentarios", like_tweet_path(tweet), method: :post, class: "like-btn" %>

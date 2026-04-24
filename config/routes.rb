@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :tweets
   resources :users
 
+  post "/tweets/:id/retweet", to: "tweets#create_retweet", as: :retweet
   post "/tweets/:id/like", to: "likes#create", as: :like_tweet
   root "tweets#index"
 

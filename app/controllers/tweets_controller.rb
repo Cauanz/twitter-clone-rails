@@ -32,6 +32,11 @@ class TweetsController < ApplicationController
       render :new
     end
   end
+
+  def create_retweet
+    Tweet.create(user: current_user, retweet_id: set_tweet)
+    redirect_to tweets_path
+  end
   
   # /tweets - 
   def edit
@@ -54,7 +59,8 @@ class TweetsController < ApplicationController
 
 
   def authorize_user!
-    redirect_to tweets_path
+    return if @tweet.user_id == current_user.id
+    redirect_to tweets_path, alert: "You are not allowed to delete this tweet."
   end
 
   def set_tweet
@@ -63,7 +69,7 @@ class TweetsController < ApplicationController
 
   # VALIDATE PARAMS
   def tweet_params
-    params.require(:tweet).permit(:body)
+    params.require(:tweet).permit(:body, :image)
   end
 
 end

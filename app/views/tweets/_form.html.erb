@@ -4,6 +4,8 @@
       <p class="error"><%= form.object.errors.full_messages.first %></p>
     <% end %>
 
+    <%= form.file_field :image %>
+
     <%= form.label :body %>  
     <%= form.text_area :body %>
 
