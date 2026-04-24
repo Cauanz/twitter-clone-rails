@@ -1,0 +1,198 @@
+<div class="main-container">
+	<header class="main-header">
+		<div class="profile-background"></div>
+
+		<div class="profile-body">
+			<div class="avatar-container">
+				<% if @user.respond_to?(:avatar) && @user.avatar.present? %>
+					<%= image_tag @user.avatar, alt: @user.username, class: "avatar-img" %>
+				<% else %>
+					<%= (@user.username.presence || "U")[0].upcase %>
+				<% end %>
+			</div>
+
+			<div class="body-container">
+				<div>
+					<h1 class="username-txt"><%= @user.username.presence || @user.username %> </h1>
+					<p class="nickname-txt">@<%= @user.nickname %></p>
+				</div>
+				<button class="follow-btn">
+					Seguir
+				</button>
+			</div>
+
+			<div class="profile-body">
+				<% if @user.respond_to?(:bio) && @user.bio.present? %>
+					<p class="user-bio"><%= @user.bio %></p>
+				<% end %>
+
+				<div class="profile-status-container">
+					<span><strong class="profile-status" ><%= @user.respond_to?(:following) ? @user.following.count : 0 %></strong> Seguindo</span>
+					<span><strong class="profile-status"><%= @user.respond_to?(:followers) ? @user.followers.count : 0 %></strong> Seguidores</span>
+					<span><strong class="profile-status"><%= @user.respond_to?(:tweets) ? @user.tweets.count : 0 %></strong> Tweets</span>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="tweets-container">
+		<div class="tweets-title">Tweets</div>
+
+		<% tweets = if defined?(@tweets) && @tweets.present?
+									@tweets
+								elsif @user.respond_to?(:tweets)
+									@user.tweets.order(created_at: :desc)
+								else
+									[]
+								end %>
+
+		<% if @tweets.any? %>
+			<% @tweets.each do |tweet| %>
+				<article class="tweet-container">
+					<div class="tweet-avatar">
+						<%= (@user.username.presence || "U")[0].upcase %>
+					</div>
+
+					<div class="tweet-body">
+						<div class="tweet-header">
+							<strong><%= @user.username %> </strong>
+							<span class="tweet-username">@<%= @user.nickname %></span>
+							<% if tweet.respond_to?(:created_at) && tweet.created_at.present? %>
+								<span>· <%= time_ago_in_words(tweet.created_at) %> atrás</span>
+							<% end %>
+						</div>
+
+						<p class="tweet-content">
+              <%= tweet.respond_to?(:content) ? tweet.body : tweet.to_s %>
+              </p>
+
+						<div class="tweet-status">
+							<span>💬</span>
+							<span>🔁</span>
+							<span>❤️</span>
+							<span>🔖</span>
+						</div>
+					</div>
+				</article>
+			<% end %>
+		<% else %>
+			<div class="tweet-null">
+				Este usuário ainda não publicou nenhum tweet.
+			</div>
+		<% end %>
+	</section>
+</div>
+
+
+<style>
+  .main-container {
+    max-width: 900px; 
+    margin: 0 auto; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    color: #0f1419;
+  }
+
+  .main-header {
+    border: 1px solid #e6ecf0; 
+    border-bottom: none; 
+    border-radius: 16px 16px 0 0; 
+    overflow: hidden;
+  }
+
+  .profile-background {
+    height: 180px; 
+    background: linear-gradient(120deg, #1DA1F2, #0d8bd9);
+  }
+
+  .profile-body {
+    padding: 16px 20px 20px; 
+    position: relative; 
+    background: #fff;
+  }
+
+  .avatar-container {
+    position: absolute; top: -48px; left: 20px; width: 96px; height: 96px; border-radius: 50%; border: 4px solid #fff; background: #1DA1F2; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; font-weight: 700; overflow: hidden;
+  }
+
+  .avatar-img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  .body-container {
+    margin-left: 120px; min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  .username-txt {
+    margin: 0; font-size: 24px; line-height: 1.2;
+  }
+
+  .nickname-txt {
+    margin: 4px 0 0; color: #536471;
+  }
+
+  .follow-btn {
+    border: 1px solid #cfd9de; background: #fff; color: #0f1419; border-radius: 999px; padding: 8px 16px; font-weight: 700; cursor: pointer;
+  }
+
+  .profile-body {
+    margin-top: 14px;
+  }
+
+  .user-bio {
+    margin: 0 0 12px; 
+    white-space: pre-wrap;
+  }
+
+  .profile-status-container {
+    display: flex; gap: 18px; flex-wrap: wrap; color: #536471; font-size: 15px;
+  }
+
+  .profile-status {
+    color: #0f1419;
+  }
+
+  .tweets-container {
+    border: 1px solid #e6ecf0; border-top: none; border-radius: 0 0 16px 16px; overflow: hidden; background: #fff;
+  }
+
+  .tweets-title {
+    padding: 14px 20px; border-bottom: 1px solid #e6ecf0; font-weight: 700;
+  }
+
+  .tweet-container {
+    padding: 16px 20px; border-bottom: 1px solid #e6ecf0; display: flex; gap: 12px;
+  }
+
+  .tweet-avatar {
+    width: 44px; height: 44px; border-radius: 50%; background: #1DA1F2; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;
+  }
+
+  .tweet-body {
+    min-width: 0; width: 100%;
+  }
+
+  .tweet-header {
+    display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
+  }
+
+  .tweet-username {
+    color: #536471;
+  }
+
+  .tweet-created_at {
+    color: #536471;
+  }
+
+  .tweet-content {
+    margin: 8px 0 0; white-space: pre-wrap; word-break: break-word;
+  }
+
+  .tweet-status {
+    display: flex; gap: 20px; margin-top: 10px; color: #536471; font-size: 14px;
+  }
+
+  .tweet-null {
+    padding: 28px 20px; text-align: center; color: #536471;
+  }
+
+</style>

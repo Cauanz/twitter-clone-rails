@@ -1,6 +1,6 @@
 class TweetsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_tweet, only: %i[show edit update destroy]
+  before_action :set_tweet, only: %i[show edit update destroy create_retweet]
   before_action :authorize_user!, only: [:destroy]
 
   # /tweets - GET TWEETS
@@ -34,7 +34,7 @@ class TweetsController < ApplicationController
   end
 
   def create_retweet
-    Tweet.create(user: current_user, retweet_id: set_tweet)
+    Tweet.create(user: current_user, retweet: set_tweet)
     redirect_to tweets_path
   end
   

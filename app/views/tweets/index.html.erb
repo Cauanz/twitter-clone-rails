@@ -9,7 +9,7 @@
       <%= link_to "Explorar", "#", class: "menu-item" %>
       <%= link_to "Notificações", "#", class: "menu-item" %>
       <%= link_to "Mensagens", "#", class: "menu-item" %>
-      <%= link_to "Perfil", "#", class: "menu-item" %>
+      <%= link_to "Perfil", user_path(current_user), class: "menu-item" %>
       <%= link_to "Configurações", "#", class: "menu-item" %>
     </nav>
   </div>
@@ -47,6 +47,7 @@
         <% if tweet.user == current_user %>
         <%= button_to "Delete", tweet_path(tweet), method: :delete %>
         <% end %>
+
         <span class="post-avatar">
           <p><%= tweet.user.username %> </p>
         </span>
@@ -54,16 +55,29 @@
         <span class="post-nickname"></span>
         <span class="posted-at"></span>
 
-
-        <%= link_to tweet_path(tweet), class: "tweet-link" do %>
           <% if tweet.retweet %>
-            <p class="tweet-body"><%= tweet.retweet.body %></p>
 
-            <% if tweet.retweet.image.attached? %>
-              <%= image_tag tweet.retweet.image %>
-            <% end %>
-            
+            <article class="tweet-card">
+              <span>Retweet</span>
+              <span class="post-avatar">
+              <p><%= tweet.retweet.user.username %> </p>
+              </span>
+              <span class="post-username"></span>
+              <span class="post-nickname"></span>
+              <span class="posted-at"></span>
+
+
+              <p class="tweet-body">
+                <%= tweet.retweet.body %>
+              </p>
+
+              <% if tweet.retweet.image.attached? %>
+                <%= image_tag tweet.retweet.image %>
+              <% end %>
+            </article>
+
           <% else %>
+            <%= link_to tweet_path(tweet), class: "tweet-link" do %>
 
             <p class="tweet-body"><%= tweet.body %></p>
 
@@ -71,8 +85,8 @@
               <%= image_tag tweet.image %>
             <% end %>
 
+            <% end %>
           <% end %>
-        <% end %>
 
 
           <div class="tweet-actions">
