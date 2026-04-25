@@ -9,7 +9,7 @@
       <%= link_to "Explorar", "#", class: "menu-item" %>
       <%= link_to "Notificações", "#", class: "menu-item" %>
       <%= link_to "Mensagens", "#", class: "menu-item" %>
-      <%= link_to "Perfil", user_path(current_user), class: "menu-item" %>
+      <%= link_to "Perfil", user_signed_in? ? user_path(current_user) : "#", class: "menu-item" %>
       <%= link_to "Configurações", "#", class: "menu-item" %>
     </nav>
   </div>

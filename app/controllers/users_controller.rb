@@ -3,6 +3,10 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show]
 
 
+  def show
+    @tweets = @user.tweets.all
+  end
+
 
   protected
   def configure_permitted_parameters
@@ -10,18 +14,8 @@ class UsersController < ApplicationController
     devise_parameter_sanitizer.permit(:account_update, keys: [:username, :nickname, :bio, :avatar])
   end
 
-  #TODO - ADICIONAR MÉTODO QUE ENVIA OS TWEETS DO USER A PÁGINA DELE
-  # def index
-  #   @tweets = Tweet.all
-  # end
-
-  def show
-    
-  end
-
-
+  
   def set_user
     @user = User.find(params[:id])
   end
-
 end
