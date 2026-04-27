@@ -1,0 +1,76 @@
+  <aside class="left-nav">
+    <div class="left-top">
+
+    <h2 class="logo">𝕏 Clone</h2>
+
+    <nav class="menu">
+      <%= link_to "Início", tweets_path, class: "menu-item active" %>
+      <%= link_to "Explorar", "#", class: "menu-item" %>
+      <%= link_to "Notificações", "#", class: "menu-item" %>
+      <%= link_to "Mensagens", "#", class: "menu-item" %>
+      <%= link_to "Perfil", user_signed_in? ? user_path(current_user) : "#", class: "menu-item" %>
+      <%= link_to "Configurações", "#", class: "menu-item" %>
+    </nav>
+  </div>
+
+  <div class="profile-config">
+    <% if user_signed_in? %>
+      <span class="avatar"></span>
+      
+      <span class="username">
+        <p>
+          <%= current_user.username %>
+        </p>
+      </span>
+      <span class="extra"></span>
+      <span class="options">
+        <%= link_to "Sair", destroy_user_session_path, method: :delete, data: { turbo_submits_with: "Saindo...", turbo_method: :delete } %>
+      </span>
+    <% else %>
+        <%= link_to "Entrar", new_user_session_path %>
+    <% end %>
+  </div>
+  </aside>
+
+
+<style>
+  .left-nav {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .left-top {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .profile-config {
+    height: fit-content;
+    padding: 16px;
+    margin-top: 15px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    position: sticky;
+    top: 20px;
+  }
+
+  .logo {
+    margin: 0 0 16px;
+    font-size: 1.4rem;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+</style>
