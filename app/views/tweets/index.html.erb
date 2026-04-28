@@ -1,104 +1,72 @@
 <div class="app-layout">
-  <aside class="left-nav">
-    <div class="left-top">
 
-    <h2 class="logo">𝕏 Clone</h2>
-
-    <nav class="menu">
-      <%= link_to "Início", "#", class: "menu-item active" %>
-      <%= link_to "Explorar", "#", class: "menu-item" %>
-      <%= link_to "Notificações", "#", class: "menu-item" %>
-      <%= link_to "Mensagens", "#", class: "menu-item" %>
-      <%= link_to "Perfil", user_signed_in? ? user_path(current_user) : "#", class: "menu-item" %>
-      <%= link_to "Configurações", "#", class: "menu-item" %>
-    </nav>
-  </div>
-
-  <div class="profile-config">
-    <% if user_signed_in? %>
-      <span class="avatar"></span>
-      
-      <span class="username">
-        <p>
-          <%= current_user.username %>
-        </p>
-      </span>
-      <span class="extra"></span>
-      <span class="options">
-        <%= link_to "Sair", destroy_user_session_path, method: :delete, data: { turbo_submits_with: "Saindo...", turbo_method: :delete } %>
-      </span>
-    <% else %>
-        <%= link_to "Entrar", new_user_session_path %>
-    <% end %>
-  </div>
-  </aside>
-
+  <%= render "shared/sidebar" %>
 
   <main class="feed">
     <header class="feed-header">
-      <%# TODO CONVERTER ISSO PARA DOIS BOTÕES %>
-      <h1>Para você</h1>
-      <h1>Seguindo</h1>
+      <button type="button" class="feed-tab active">Para você</button>
+      <button type="button" class="feed-tab">Seguindo</button>
     </header>
 
     <% @tweets.each do |tweet| %>
       <article class="tweet-card">
-        <%# TODO - MOVER ISSO PARA A ABA DE PERFIL %>
-        <% if tweet.user == current_user %>
-        <%= button_to "Delete", tweet_path(tweet), method: :delete %>
-        <% end %>
+        <div class="tweet-card__header">
+          <div class="tweet-author">
+            <span class="post-avatar"><%= tweet.user.username.to_s.first.to_s.upcase %></span>
+            <div class="tweet-author__meta">
+              <strong class="tweet-author__name"><%= tweet.user.username %></strong>
+              <span class="tweet-author__nick">@<%= tweet.user.nickname %></span>
+            </div>
+          </div>
 
-        <span class="post-avatar">
-          <p><%= tweet.user.username %> </p>
-        </span>
-        <span class="post-username"></span>
-        <span class="post-nickname"></span>
-        <span class="posted-at"></span>
+          <% if tweet.user == current_user %>
+            <%= button_to "Delete", tweet_path(tweet), method: :delete, class: "delete-btn" %>
+          <% end %>
+        </div>
 
-          <% if tweet.retweet %>
+        <% if tweet.retweet %>
+          <div class="retweet-box">
+            <span class="retweet-label">Retweet</span>
 
-            <article class="tweet-card">
-              <span>Retweet</span>
-              <span class="post-avatar">
-              <p><%= tweet.retweet.user.username %> </p>
-              </span>
-              <span class="post-username"></span>
-              <span class="post-nickname"></span>
-              <span class="posted-at"></span>
+            <div class="retweet-card">
+              <div class="tweet-card__header tweet-card__header--compact">
+                <div class="tweet-author">
+                  <span class="post-avatar"><%= tweet.retweet.user.username.to_s.first.to_s.upcase %></span>
+                  <div class="tweet-author__meta">
+                    <strong class="tweet-author__name"><%= tweet.retweet.user.username %></strong>
+                  </div>
+                </div>
+              </div>
 
+              <%= link_to tweet_path(tweet.retweet), class: "tweet-link" do %>
+                <p class="tweet-body"><%= tweet.retweet.body %></p>
 
-              <p class="tweet-body">
-                <%= tweet.retweet.body %>
-              </p>
-
-              <% if tweet.retweet.image.attached? %>
-                <%= image_tag tweet.retweet.image %>
+                <% if tweet.retweet.image.attached? %>
+                  <%= image_tag tweet.retweet.image, class: "tweet-media" %>
+                <% end %>
               <% end %>
-            </article>
-
-          <% else %>
-            <%= link_to tweet_path(tweet), class: "tweet-link" do %>
-
+            </div>
+          </div>
+        <% else %>
+          <%= link_to tweet_path(tweet), class: "tweet-link" do %>
             <p class="tweet-body"><%= tweet.body %></p>
 
             <% if tweet.image.attached? %>
-              <%= image_tag tweet.image %>
-            <% end %>
-
+              <%= image_tag tweet.image, class: "tweet-media" %>
             <% end %>
           <% end %>
+        <% end %>
 
+        <div class="tweet-actions">
+          <span class="likes-count">❤️ <%= tweet.likes.count %></span>
+          <%= button_to "Curtir", like_tweet_path(tweet), method: :post, class: "action-btn" %>
 
-          <div class="tweet-actions">
-            <span class="likes-count">❤️ <%= tweet.likes.count %></span>
-            <%= button_to "Curtir", like_tweet_path(tweet), method: :post, class: "like-btn" %>
+          <span class="retweets-count"></span>
+          <%= button_to "Retweet", retweet_path(tweet), method: :post, class: "action-btn" %>
 
-            <span class="retweets-count"></span>
-            <%= button_to "Retweet", retweet_path(tweet), method: :post, class: "like-btn" %>
-
-            <span class="comments-count"></span>
-            <%= button_to "Comentarios", like_tweet_path(tweet), method: :post, class: "like-btn" %>
-          </div>
+          <span class="comments-count"></span>
+          <%= button_to "Comentarios", like_tweet_path(tweet), method: :post, class: "action-btn" %>
+        </div>
         </article>
     <% end %>
   </main>
@@ -109,7 +77,6 @@
 <% end %>
 
 <style>
-
   .menu-modal {
     display: none;
     position: sticky;
@@ -197,8 +164,9 @@
 
   .feed-header {
     display: flex;
-    justify-content: space-around; 
-    padding: 16px;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px;
     border-bottom: 1px solid var(--border);
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(6px);
@@ -207,9 +175,20 @@
     z-index: 2;
   }
 
-  .feed-header h1 {
-    margin: 0;
-    font-size: 1.2rem;
+  .feed-tab {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .feed-tab.active {
+    color: var(--text);
+    background: #eff3f4;
   }
 
   .tweet-card {
@@ -217,7 +196,66 @@
     border-bottom: 1px solid var(--border);
   }
 
+  .tweet-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .tweet-card__header--compact {
+    margin-bottom: 8px;
+  }
+
+  .tweet-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .tweet-author__meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .tweet-author__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tweet-author__nick {
+    color: #536471;
+    font-size: 13px;
+  }
+
+  .post-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5fe;
+    color: var(--primary);
+    font-weight: 800;
+    text-transform: uppercase;
+    flex: 0 0 auto;
+  }
+
+  .delete-btn {
+    border: 0;
+    background: transparent;
+    color: #e11d48;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
   .tweet-link {
+    display: block;
     text-decoration: none;
     color: inherit;
   }
@@ -228,10 +266,44 @@
     word-break: break-word;
   }
 
+  .tweet-media {
+    display: block;
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-top: 12px;
+  }
+
+  .retweet-box {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fafcff;
+  }
+
+  .retweet-label {
+    display: inline-flex;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .retweet-card {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fff;
+  }
+
   .tweet-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
   }
 
   .likes-count {
@@ -239,7 +311,7 @@
     font-size: 0.95rem;
   }
 
-  .like-btn {
+  .action-btn {
     border: 1px solid #cfd9de;
     background: transparent;
     color: var(--muted);
@@ -249,7 +321,7 @@
     cursor: pointer;
   }
 
-  .like-btn:hover {
+  .action-btn:hover {
     background: #eff3f4;
     color: var(--text);
   }

@@ -1,154 +1,156 @@
 <div class="main-container">
 
-    <%= render "side_bar" %>
+  <%= render "shared/sidebar" %>
 
-  <div class="edit-profile-modal">
-    <%= form_with model: @user, class: "edit-form" do |f| %>
-      <%= f.file_field :avatar %>
+  <div class="main-content">
+    <div class="edit-profile-modal">
+      <%= form_with model: @user, class: "edit-form" do |f| %>
+        <%= f.file_field :avatar %>
 
-      <%= f.label :username, "Username" %>
-      <%= f.text_field :username %>
+        <%= f.label :username, "Username" %>
+        <%= f.text_field :username %>
 
-      <%= f.label :nickname, "nickname" %>
-      <%= f.text_field :nickname %>
+        <%= f.label :nickname, "nickname" %>
+        <%= f.text_field :nickname %>
 
-      <%= f.label :bio, "Bio" %>
-      <%= f.text_area :bio %>
+        <%= f.label :bio, "Bio" %>
+        <%= f.text_area :bio %>
 
-      <%= f.submit %>
-    <% end %>
-  </div>
+        <%= f.submit %>
+      <% end %>
+    </div>
 
-	<header class="main-header">
-		<div class="profile-background"></div>
+    <header class="main-header">
+      <div class="profile-background"></div>
 
-		<div class="profile-body">
-			<div class="avatar-container">
-				<% if @user.respond_to?(:avatar) && @user.avatar.present? %>
-					<%= image_tag @user.avatar, alt: @user.username, class: "avatar-img" %>
-				<% else %>
-					<%= (@user.username.presence || "U")[0].upcase %>
-				<% end %>
-			</div>
-
-			<div class="body-container">
-				<div>
-					<h1 class="username-txt"><%= @user.username.presence || @user.username %> </h1>
-					<p class="nickname-txt">@<%= @user.nickname %></p>
-				</div>
-        <% if user_signed_in? %>
-          <button class="edit-btn" >
-            Editar
-          </button>
-        <% else %>
-          <button class="follow-btn">
-            Seguir
-          </button>
-        <% end %>
-			</div>
-
-			<div class="profile-body">
-				<% if @user.respond_to?(:bio) && @user.bio.present? %>
-					<p class="user-bio"><%= @user.bio %></p>
-				<% end %>
-
-				<div class="profile-status-container">
-					<span><strong class="profile-status" ><%= @user.respond_to?(:following) ? @user.following.count : 0 %></strong> Seguindo</span>
-					<span><strong class="profile-status"><%= @user.respond_to?(:followers) ? @user.followers.count : 0 %></strong> Seguidores</span>
-					<span><strong class="profile-status"><%= @user.respond_to?(:tweets) ? @user.tweets.count : 0 %></strong> Tweets</span>
-				</div>
-			</div>
-		</div>
-	</header>
-
-	<section class="tweets-container">
-		<div class="tweets-title">Tweets</div>
-
-		<% tweets = if defined?(@tweets) && @tweets.present?
-									@tweets
-								elsif @user.respond_to?(:tweets)
-									@user.tweets.order(created_at: :desc)
-								else
-									[]
-								end %>
-
-		<% if @tweets.any? %>
-			<% @tweets.each do |tweet| %>
-				<article class="tweet-container">
-					<div class="tweet-avatar">
-						<%= (@user.username.presence || "U")[0].upcase %>
-					</div>
-
-          <% if tweet.retweet %>
-            <div class="tweet-body">
-              <div class="tweet-header">
-                <strong><%= @user.username %> </strong>
-                <span class="tweet-username">@<%= @user.nickname %></span>
-                <% if tweet.respond_to?(:created_at) && tweet.created_at.present? %>
-                  <span>· <%= time_ago_in_words(tweet.created_at) %> atrás</span>
-                <% end %>
-              </div>
-
-              <p class="tweet-content">
-                <div class="tweet-body">
-                  <div class="tweet-header">
-                    <strong><%= tweet.retweet.user.username %> </strong>
-                    <span class="tweet-username">@<%= tweet.retweet.user.nickname %></span>
-                    <% if tweet.retweet.respond_to?(:created_at) && tweet.retweet.created_at.present? %>
-                      <span>· <%= time_ago_in_words(tweet.retweet.created_at) %> atrás</span>
-                    <% end %>
-                  </div>
-
-                  <p class="tweet-content">
-                    <%= tweet.retweet.body %>
-                    </p>
-
-                  <div class="tweet-status">
-                    <span>💬</span>
-                    <span>🔁</span>
-                    <span>❤️</span>
-                    <span>🔖</span>
-                  </div>
-                </div>
-                </p>
-
-              <div class="tweet-status">
-                <span>💬</span>
-                <span>🔁</span>
-                <span>❤️</span>
-                <span>🔖</span>
-              </div>
-            </div>
+      <div class="profile-body">
+        <div class="avatar-container">
+          <% if @user.respond_to?(:avatar) && @user.avatar.present? %>
+            <%= image_tag @user.avatar, alt: @user.username, class: "avatar-img" %>
           <% else %>
-            <div class="tweet-body">
-              <div class="tweet-header">
-                <strong><%= @user.username %> </strong>
-                <span class="tweet-username">@<%= @user.nickname %></span>
-                <% if tweet.respond_to?(:created_at) && tweet.created_at.present? %>
-                  <span>· <%= time_ago_in_words(tweet.created_at) %> atrás</span>
-                <% end %>
-              </div>
-
-              <p class="tweet-content">
-                <%= tweet.body %>
-                </p>
-
-              <div class="tweet-status">
-                <span>💬</span>
-                <span>🔁</span>
-                <span>❤️</span>
-                <span>🔖</span>
-              </div>
-            </div>
+            <%= (@user.username.presence || "U")[0].upcase %>
           <% end %>
-				</article>
-			<% end %>
-		<% else %>
-			<div class="tweet-null">
-				Este usuário ainda não publicou nenhum tweet.
-			</div>
-		<% end %>
-	</section>
+        </div>
+
+        <div class="body-container">
+          <div>
+            <h1 class="username-txt"><%= @user.username.presence || @user.username %> </h1>
+            <p class="nickname-txt">@<%= @user.nickname %></p>
+          </div>
+          <% if user_signed_in? %>
+            <button class="edit-btn" >
+              Editar
+            </button>
+          <% else %>
+            <button class="follow-btn">
+              Seguir
+            </button>
+          <% end %>
+        </div>
+
+        <div class="profile-body">
+          <% if @user.respond_to?(:bio) && @user.bio.present? %>
+            <p class="user-bio"><%= @user.bio %></p>
+          <% end %>
+
+          <div class="profile-status-container">
+            <span><strong class="profile-status" ><%= @user.respond_to?(:following) ? @user.following.count : 0 %></strong> Seguindo</span>
+            <span><strong class="profile-status"><%= @user.respond_to?(:followers) ? @user.followers.count : 0 %></strong> Seguidores</span>
+            <span><strong class="profile-status"><%= @user.respond_to?(:tweets) ? @user.tweets.count : 0 %></strong> Tweets</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="tweets-container">
+      <div class="tweets-title">Tweets</div>
+
+      <% tweets = if defined?(@tweets) && @tweets.present?
+                    @tweets
+                  elsif @user.respond_to?(:tweets)
+                    @user.tweets.order(created_at: :desc)
+                  else
+                    []
+                  end %>
+
+      <% if @tweets.any? %>
+        <% @tweets.each do |tweet| %>
+          <article class="tweet-container">
+            <div class="tweet-avatar">
+              <%= (@user.username.presence || "U")[0].upcase %>
+            </div>
+
+            <% if tweet.retweet %>
+              <div class="tweet-body">
+                <div class="tweet-header">
+                  <strong><%= @user.username %> </strong>
+                  <span class="tweet-username">@<%= @user.nickname %></span>
+                  <% if tweet.respond_to?(:created_at) && tweet.created_at.present? %>
+                    <span>· <%= time_ago_in_words(tweet.created_at) %> atrás</span>
+                  <% end %>
+                </div>
+
+                <p class="tweet-content">
+                  <div class="tweet-body">
+                    <div class="tweet-header">
+                      <strong><%= tweet.retweet.user.username %> </strong>
+                      <span class="tweet-username">@<%= tweet.retweet.user.nickname %></span>
+                      <% if tweet.retweet.respond_to?(:created_at) && tweet.retweet.created_at.present? %>
+                        <span>· <%= time_ago_in_words(tweet.retweet.created_at) %> atrás</span>
+                      <% end %>
+                    </div>
+
+                    <p class="tweet-content">
+                      <%= tweet.retweet.body %>
+                      </p>
+
+                    <div class="tweet-status">
+                      <span>💬</span>
+                      <span>🔁</span>
+                      <span>❤️</span>
+                      <span>🔖</span>
+                    </div>
+                  </div>
+                  </p>
+
+                <div class="tweet-status">
+                  <span>💬</span>
+                  <span>🔁</span>
+                  <span>❤️</span>
+                  <span>🔖</span>
+                </div>
+              </div>
+            <% else %>
+              <div class="tweet-body">
+                <div class="tweet-header">
+                  <strong><%= @user.username %> </strong>
+                  <span class="tweet-username">@<%= @user.nickname %></span>
+                  <% if tweet.respond_to?(:created_at) && tweet.created_at.present? %>
+                    <span>· <%= time_ago_in_words(tweet.created_at) %> atrás</span>
+                  <% end %>
+                </div>
+
+                <p class="tweet-content">
+                  <%= tweet.body %>
+                  </p>
+
+                <div class="tweet-status">
+                  <span>💬</span>
+                  <span>🔁</span>
+                  <span>❤️</span>
+                  <span>🔖</span>
+                </div>
+              </div>
+            <% end %>
+          </article>
+        <% end %>
+      <% else %>
+        <div class="tweet-null">
+          Este usuário ainda não publicou nenhum tweet.
+        </div>
+      <% end %>
+    </section>
+  </div>
 </div>
 
 <script>
@@ -170,11 +172,19 @@
 
 <style>
   .main-container {
-    max-width: 900px; 
-    margin: 0 auto; 
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-    color: #0f1419;
-    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .main-content {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
   }
 
   .main-header {
@@ -212,7 +222,8 @@
   }
 
   .nickname-txt {
-    margin: 4px 0 0; color: #536471;
+    margin: 4px 0 0; 
+    color: #536471;
   }
 
   .follow-btn, .edit-btn {

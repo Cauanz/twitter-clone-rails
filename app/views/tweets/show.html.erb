@@ -1,10 +1,36 @@
 <section class="tweet-show">
   <article class="tweet-card">
+    <div class="tweet-header">
+      <div class="user-info">
+        <div class="user-avatar"><%= @tweet.user.username %></div>
+        <div class="user-details">
+          <h3 class="user-name"><%= @tweet.user.username %></h3>
+          <p class="tweet-date"><%= time_ago_in_words(@tweet.created_at) %> atrás</p>
+        </div>
+      </div>
+    </div>
+
     <p class="tweet-body"><%= @tweet.body %></p>
 
+    <% if @tweet.image.attached? %>
+      <div class="tweet-image">
+        <%= image_tag @tweet.image %>
+      </div>
+    <% end %>
+
+    <div class="tweet-stats">
+      <span class="stat">
+        <span class="likes-count">❤️ <%= @tweet.likes.count %> </span>
+        <%= button_to "Curtir", like_tweet_path(@tweet), method: :post, class: "like-btn" %>
+      </span>
+    </div>
+
     <nav class="tweet-actions" aria-label="Ações do tweet">
-      <%= link_to "Editar", edit_tweet_path(@tweet), class: "btn btn-primary" %>
-      <%= link_to "Voltar", tweets_path, class: "btn btn-secondary" %>
+      <% if @tweet.user == current_user %>
+        <%= link_to "✏️ Editar", edit_tweet_path(@tweet), class: "btn btn-primary" %>
+        <%= link_to "🗑️ Deletar", tweet_path(@tweet), method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger" %>
+      <% end %>
+      <%= link_to "← Voltar", tweets_path, class: "btn btn-secondary" %>
     </nav>
   </article>
 </section>
@@ -44,6 +70,14 @@
     flex-wrap: wrap;
   }
 
+  .tweet-image {
+    width: 100%;
+  }
+
+  img {
+    width: 100%;
+  }
+
   .btn {
     display: inline-block;
     padding: 10px 16px;
@@ -72,4 +106,24 @@
     background: #e8f5fe;
   }
 
+
+  .likes-count {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .like-btn {
+    border: 1px solid #cfd9de;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .like-btn:hover {
+    background: #eff3f4;
+    color: var(--text);
+  }
 </style>

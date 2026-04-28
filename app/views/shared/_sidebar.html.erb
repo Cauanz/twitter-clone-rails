@@ -1,0 +1,159 @@
+  <aside class="left-nav">
+    <div class="left-top">
+
+    <h2 class="logo">𝕏 Clone</h2>
+
+    <nav class="menu">
+      <li class="menu-item <%= 'active' if current_page?(tweets_path) %>">
+        <%= link_to "Início", tweets_path, class: "menu-item" %>
+      </li>
+      <li class="menu-item">
+        <%= link_to "Explorar", "#", class: "menu-item" %>
+      </li>
+      <li class="menu-item">
+        <%= link_to "Notificações", "#", class: "menu-item" %>
+      </li>
+      <li class="menu-item">
+        <%= link_to "Mensagens", "#", class: "menu-item" %>
+      </li>
+      <li class="menu-item <%= 'active' if current_page?(user_path(current_user)) %>">
+        <%= link_to "Perfil", user_signed_in? ? user_path(current_user) : "#", class: "menu-item" %>
+      </li>
+      <li class="menu-item">
+        <%= link_to "Configurações", "#", class: "menu-item" %>
+      </li>
+    </nav>
+  </div>
+
+  <div class="profile-config">
+    <% if user_signed_in? %>
+      <span class="avatar">
+        <% if current_user.respond_to?(:avatar) && current_user.avatar.present? %>
+            <%= image_tag current_user.avatar, alt: current_user.username, class: "avatar-img" %>
+          <% else %>
+            <%= (current_user.username.presence || "U")[0].upcase %>
+          <% end %>
+      </span>
+      
+      <span class="username">
+        <p>
+          <%= current_user.username %>
+        </p>
+      </span>
+      <span class="extra"></span>
+      <span class="options">
+        <%= link_to "Sair", destroy_user_session_path, method: :delete, class: "option-btn", data: { turbo_submits_with: "Saindo...", turbo_method: :delete }%>
+      </span>
+    <% else %>
+        <%= link_to "Entrar", new_user_session_path %>
+    <% end %>
+  </div>
+  </aside>
+
+
+<script>
+
+  (function () {
+    const opts = document.querySelectorAll(".menu-item")
+
+    opts.forEach((opt) => {
+      opt.addEventListener("click", () => {
+        opts.forEach(o => o.classList.remove("active"))
+        opt.classList.add("active")
+      })
+    })
+
+  })()
+
+</script>
+
+
+<style>
+  .left-nav {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .left-top {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .profile-config {
+    height: fit-content;
+    padding: 16px;
+    margin-top: 15px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    position: sticky;
+    top: 20px;
+  }
+
+  .logo {
+    margin: 0 0 16px;
+    font-size: 1.4rem;
+  }
+
+  .avatar-container {
+    position: absolute; 
+    top: -48px; 
+    left: 20px; 
+    width: 96px; 
+    height: 96px; 
+    border-radius: 50%; 
+    border: 4px solid #fff; 
+    background: #1DA1F2; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #fff; 
+    font-size: 30px; 
+    font-weight: 700; 
+    overflow: hidden;
+  }
+
+  .avatar-img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .menu-item {
+    text-decoration: none;
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    list-style-type: none;
+  }
+
+  .menu-item:hover {
+    background: #e8f5fe;
+    color: var(--primary);
+  }
+
+  .menu-item.active {
+    background: #e8f5fe;
+    color: var(--primary);
+  }
+
+  .option-btn {
+    text-decoration: none;
+
+  }
+</style>

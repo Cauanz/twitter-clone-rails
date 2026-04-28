@@ -57,10 +57,9 @@ class TweetsController < ApplicationController
     redirect_to tweets_path
   end
 
-
   def authorize_user!
     return if @tweet.user_id == current_user.id
-    redirect_to tweets_path, alert: "You are not allowed to delete this tweet."
+    redirect_to tweets_path
   end
 
   def set_tweet
